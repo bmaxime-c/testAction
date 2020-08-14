@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run
-      run: dotnet run $GITHUB_WORKSPACE ${{GITHUB_WORKSPACE}}
+      run: dotnet run -- toto $GITHUB_WORKSPACE ${{GITHUB_WORKSPACE}}
