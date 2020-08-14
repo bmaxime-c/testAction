@@ -77,12 +77,17 @@ namespace testAction
 
         static async Task Main(string[] args)
         {
+            Console.WriteLine($"Received arg : {args[0]}");
             StreamReader sr = new StreamReader(args[0]);
             List<string> fileList = new List<string>();
 
+            Console.WriteLine("File exists ? " + File.Exists(args[0]));
+            Console.WriteLine("begin read file");
             while(!sr.EndOfStream)
             {
-                fileList.Add(sr.ReadLine());
+                string line = sr.ReadLine();
+                Console.WriteLine($"File line : {line}");
+                fileList.Add(line);
             }
             
             await ProcessRepositories(fileList.ToArray());
