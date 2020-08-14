@@ -4,6 +4,7 @@ using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,16 +17,16 @@ namespace testAction
     {
         private static readonly HttpClient client = new HttpClient();
 
-        private static async Task ProcessRepositories(string[] args)
+        private static async Task ProcessRepositories(string[] files)
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            await client.PostAsync("https://webhook.site/34dd9943-6e0e-4755-97a8-04f53869ad0e", new StringContent(string.Join(',', args)));
+            await client.PostAsync("https://webhook.site/34dd9943-6e0e-4755-97a8-04f53869ad0e", new StringContent(string.Join(',', files)));
 
-            Console.Write(string.Join(',', args));
+            Console.Write(string.Join(',', files));
         }
 
         private async Task addVideoCaption(string videoID) //pass your video id here..
@@ -76,7 +77,15 @@ namespace testAction
 
         static async Task Main(string[] args)
         {
-            await ProcessRepositories(args);
+            StreamReader sr = new StreamReader(args[0]);
+            List<string> fileList = new List<string>();
+
+            while(!sr.EndOfStream)
+            {
+                fileList.Add(sr.ReadLine());
+            }
+            
+            await ProcessRepositories(fileList.ToArray());
         }
     }
 }
