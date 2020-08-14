@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include=".github\workflows\dotnet-core.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.48.0" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.47.0.2008" />
   </ItemGroup>
