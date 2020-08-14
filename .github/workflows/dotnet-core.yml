@@ -14,6 +14,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.2
+    - name: get changed files
+      id: getfile
+      run: |
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -23,4 +28,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run
-      run: dotnet run -- toto $GITHUB_WORKSPACE
+      run: dotnet run -- ${{ steps.getfile.outputs.files }}
