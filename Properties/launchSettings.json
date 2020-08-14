@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "testAction": {
+      "commandName": "Project",
+      "commandLineArgs": "toto tata tutu"
+    }
+  }
+}
