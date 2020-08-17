@@ -15,7 +15,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.2
     - name: get changed files
-      run: git diff-tree --no-commit-id --name-only -r ${{github.sha}} > changedFiles.txt
+      run: git diff-tree --no-commit-id --name-only -r ${{github.sha}} 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
