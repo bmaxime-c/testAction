@@ -27,4 +27,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run
-      run: dotnet run -- "${{ steps.file_changes.outputs.files}}"
+      run: dotnet run -- $HOME/files.json
