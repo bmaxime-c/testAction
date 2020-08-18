@@ -14,13 +14,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.2
-    - name: Bash for GitHub Actions
-      uses: srt32/git-actions@v0.0.3
+    - id: file_changes
+      uses: trilom/file-changes-action@v1.2.3
       with:
-        args: "git diff-tree --no-commit-id --name-only -r $b4b58c57d9b732d9bfc244185f92d353506f2247"
-    - name: get changed files
-      run: git diff-tree --no-commit-id --name-only -r $b4b58c57d9b732d9bfc244185f92d353506f2247
-      #run: git diff-tree --no-commit-id --name-only -r ${{github.sha}} > changedFiles.txt
+        fileOutput: '\r\n'
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -30,4 +27,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run
-      run: dotnet run -- $GITHUB_WORKSPACE/changedFiles.txt
+      run: dotnet run -- "${{ steps.file_changes.outputs.files}}"
