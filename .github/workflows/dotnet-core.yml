@@ -15,7 +15,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.2
     - id: file_changes
-      uses: trilom/file-changes-action@v1.2.3
+      uses: trilom/file-changes-action@v1.2.4
       with:
         fileOutput: '\r\n'
     - name: Setup .NET Core
