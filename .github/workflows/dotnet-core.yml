@@ -27,6 +27,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run
-      run: dotnet run -- $HOME/files.csv $CLIENT_SECRETS
+      run: dotnet run -- $HOME/files.csv $CLIENT_ID $CLIENT_SECRET b.maximec@gmail.com
       env:
-        CLIENT_SECRETS: ${{ secrets.CLIENT_SECRETS }}
+        CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}

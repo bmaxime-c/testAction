@@ -17,24 +17,39 @@ namespace testAction
         /// </summary>
         private static readonly string[] SUBTITLE_EXTENSIONS = { ".sbv", ".srt", ".sub", ".mpsub", ".lrc", ".cap", ".smi", ".sami", ".rt", ".vtt", ".ttml", ".dfxp", ".scc", ".stl", ".tds", ".cin", ".asc" };
 
+        private static string USERNAME = "";
+
+        static async Task Main(string[] args)
+        {
+            //Reçoit en argument, le fichier contenant la liste des fichiers modifiés sur ce commit
+            Console.WriteLine($"Received arg : {args[0]}");
+            var files = File.ReadAllText(args[0]);
+            var clientId = args[1];
+            var clientSecret = args[2];
+            USERNAME = args[3];
+            await ProcessModifiedFiles(files.Split(','), clientId, clientSecret);
+
+
+        }
+
         /// <summary>
         /// Processes the list of files, checking wether the file exists, 
         /// and if it is a subtitle, sends it to YouTube
         /// </summary>
         /// <param name="files">Array of files to process</param>
         /// <returns></returns>
-        private static async Task ProcessModifiedFiles(string[] files)
+        private static async Task ProcessModifiedFiles(string[] files, string clientId, string clientSecret)
         {
-            foreach(FileInfo fi in files.Select(f => new FileInfo(f)))
+            foreach (FileInfo fi in files.Select(f => new FileInfo(f)))
             {
                 Console.WriteLine($"Processing file : {fi.Name}");
                 try
                 {
-                    if(!fi.Exists)
+                    if (!fi.Exists)
                     {
                         Console.WriteLine($"File {fi.Name} does not exists, skip");
                     }
-                    else if(!SUBTITLE_EXTENSIONS.Contains(fi.Extension))
+                    else if (!SUBTITLE_EXTENSIONS.Contains(fi.Extension))
                     {
                         Console.WriteLine($"File {fi.Name} is not recognized as a subtitle file, skip");
                     }
@@ -45,7 +60,7 @@ namespace testAction
                         var fileParts = fi.Name.Split('-');
                         var language = fileParts[0].ToLower();
                         var captionName = language;
-                        switch(language)
+                        switch (language)
                         {
                             case "fr":
                                 captionName = "Français";
@@ -56,10 +71,10 @@ namespace testAction
                                 break;
                         }
 
-                        await UploadVideoCaption(dirParts[0], language, captionName, fi);
+                        await UploadVideoCaption(dirParts[0], language, captionName, fi, clientId, clientSecret);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine($"Error reading file {fi.Name} : {e}");
                 }
@@ -74,19 +89,20 @@ namespace testAction
         /// <param name="captionName">Name of the caption (should be human readable language name)</param>
         /// <param name="fi">FileInfo pointing to caption file</param>
         /// <returns></returns>
-        private static async Task UploadVideoCaption(string videoID, string language, string captionName, FileInfo fi)
+        private static async Task UploadVideoCaption(string videoID, string language, string captionName, FileInfo fi, string clientId, string clientSecret)
         {
             UserCredential credential;
             //you should go out and get a json file that keeps your information... You can get that from the developers console...
-            using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
-            {
-                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    new[] { YouTubeService.Scope.YoutubeForceSsl, YouTubeService.Scope.Youtube, YouTubeService.Scope.Youtubepartner },
-                    "b.maximec@gmail.com",
-                    CancellationToken.None
-                );
-            }
+            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                new ClientSecrets()
+                {
+                    ClientId = clientId,
+                    ClientSecret = clientSecret
+                },
+                new[] { YouTubeService.Scope.YoutubeForceSsl, YouTubeService.Scope.Youtube, YouTubeService.Scope.Youtubepartner },
+                USERNAME,
+                CancellationToken.None
+            );
 
             //creates the service...
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
@@ -122,16 +138,6 @@ namespace testAction
             }
         }
 
-        static async Task Main(string[] args)
-        {
-            //Reçoit en argument, le fichier contenant la liste des fichiers modifiés sur ce commit
-            Console.WriteLine($"Received arg : {args[0]}");
-            //var files = File.ReadAllText(args[0]);
-
-            //await ProcessModifiedFiles(files.Split(','));
-            Console.WriteLine($"Read secret : {args[1]}");
-
-
-        }
+        
     }
 }
