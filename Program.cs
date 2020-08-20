@@ -1,14 +1,10 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -91,6 +87,7 @@ namespace testAction
                     CancellationToken.None
                 );
             }
+
             //creates the service...
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
@@ -129,9 +126,12 @@ namespace testAction
         {
             //Reçoit en argument, le fichier contenant la liste des fichiers modifiés sur ce commit
             Console.WriteLine($"Received arg : {args[0]}");
-            var files = File.ReadAllText(args[0]);
-            
-            await ProcessModifiedFiles(files.Split(','));
+            //var files = File.ReadAllText(args[0]);
+
+            //await ProcessModifiedFiles(files.Split(','));
+            Console.WriteLine($"Read secret : {Environment.GetEnvironmentVariable("CLIENT_SECRET")}");
+
+
         }
     }
 }
