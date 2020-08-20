@@ -27,6 +27,6 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Run
-      run: dotnet run -- $HOME/files.csv
+      run: dotnet run -- $HOME/files.csv $CLIENT_SECRETS
       env:
         CLIENT_SECRETS: ${{ secrets.CLIENT_SECRETS }}

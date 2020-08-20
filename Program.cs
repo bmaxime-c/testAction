@@ -129,8 +129,7 @@ namespace testAction
             //var files = File.ReadAllText(args[0]);
 
             //await ProcessModifiedFiles(files.Split(','));
-            var secret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
-            Console.WriteLine($"Read secret : {secret.Length}");
+            Console.WriteLine($"Read secret : {args[1]}");
 
 
         }
