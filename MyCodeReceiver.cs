@@ -21,7 +21,11 @@ namespace testAction
 
         public string Key { get; set; }
 
-        public MyCodeReceiver(string key) => Key = key;
+        public MyCodeReceiver(string key, string redirectUri)
+        {
+            Key = key;
+            RedirectUri = redirectUri;
+        }
 
         /// <inheritdoc/>
         public Task<AuthorizationCodeResponseUrl> ReceiveCodeAsync(AuthorizationCodeRequestUrl url,
@@ -41,7 +45,8 @@ namespace testAction
             var observable = firebase
               .Child("AUTHCODE")
               .AsObservable<string>()
-              .Subscribe(d => {
+              .Subscribe(d =>
+              {
                   if (d.EventType == Firebase.Database.Streaming.FirebaseEventType.InsertOrUpdate)
                   {
                       if (d.Key == Key)
