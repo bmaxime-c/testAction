@@ -1,5 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Flows;
 using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using System;
@@ -17,7 +19,10 @@ namespace testAction
         /// </summary>
         private static readonly string[] SUBTITLE_EXTENSIONS = { ".sbv", ".srt", ".sub", ".mpsub", ".lrc", ".cap", ".smi", ".sami", ".rt", ".vtt", ".ttml", ".dfxp", ".scc", ".stl", ".tds", ".cin", ".asc" };
 
-        private static string USERNAME = "";
+        private static string USERNAME = "abcd";
+
+        private static string CLIENT_ID = "509349462562-imb59920ldtbvsmtttq6vknd99u43e19.apps.googleusercontent.com";
+        private static string CLIENT_SECRET = "MYu4TMzDMb6lpFC7kUmLiSuJ";
 
         static async Task Main(string[] args)
         {
@@ -28,8 +33,6 @@ namespace testAction
             var clientSecret = args[2];
             USERNAME = args[3];
             await ProcessModifiedFiles(files.Split(','), clientId, clientSecret);
-
-
         }
 
         /// <summary>
@@ -99,9 +102,11 @@ namespace testAction
                     ClientId = clientId,
                     ClientSecret = clientSecret
                 },
-                new[] { YouTubeService.Scope.YoutubeForceSsl, YouTubeService.Scope.Youtube, YouTubeService.Scope.Youtubepartner },
+                new[] { YouTubeService.Scope.YoutubeForceSsl, YouTubeService.Scope.Youtube },
                 USERNAME,
-                CancellationToken.None
+                CancellationToken.None,
+                null,
+                new MyCodeReceiver("")
             );
 
             //creates the service...
