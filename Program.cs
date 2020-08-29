@@ -21,8 +21,8 @@ namespace testAction
 
         private static string USERNAME = "abcd";
 
-        private static string CLIENT_ID = "509349462562-imb59920ldtbvsmtttq6vknd99u43e19.apps.googleusercontent.com";
-        private static string CLIENT_SECRET = "MYu4TMzDMb6lpFC7kUmLiSuJ";
+        private static string CLIENT_ID = "509349462562-5s535f8m4qiod3jqdj17rsnv9ofrv5tm.apps.googleusercontent.com";
+        private static string CLIENT_SECRET = "maW5Hks-78A4KsEdH12yY4Os";
 
         static async Task Main(string[] args)
         {
@@ -32,7 +32,7 @@ namespace testAction
             var clientId = args[1];
             var clientSecret = args[2];
             USERNAME = args[3];
-            await ProcessModifiedFiles(files.Split(','), clientId, clientSecret);
+            await ProcessModifiedFiles(files.Split(','), CLIENT_ID, CLIENT_SECRET);
         }
 
         /// <summary>
