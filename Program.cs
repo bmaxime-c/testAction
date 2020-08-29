@@ -106,7 +106,7 @@ namespace testAction
                 USERNAME,
                 CancellationToken.None,
                 null,
-                new MyCodeReceiver("ABCD", $"https://us-central1-uploader-1d84f.cloudfunctions.net/authCallback?key=ABCD")
+                new MyCodeReceiver("ABCD", $"https://authyt.trucsagiles.com/authCallback")
             );
 
             //creates the service...
